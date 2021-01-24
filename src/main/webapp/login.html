@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login page</title>
+</head>
+<body>
+<h1>Login page</h1>
+<!--<p th:if="${loginError}" class="error">Wrong user or password</p>-->
+<p  class="error" id="err_msg" style="color:red" ></p>
+<form th:action="@{/login.html}" method="post">
+    <label for="username">Username</label>:
+    <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
+    <label for="password">Password</label>:
+    <input type="password" id="password" name="password" /> <br />
+    <input type="submit" value="Log in" />
+    <br/><a href="/registration">registration</a>
+</form>
+
+<script>
+    var search = window.location.search;
+    if(search == "?error"){
+       var el = document.getElementById("err_msg");
+        el.innerText = "Wrong user or password"
+    }
+    // alert(c)
+</script>
+</body>
+</html>

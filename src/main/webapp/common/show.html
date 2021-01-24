@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Show phrase</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!--https://fontawesome.com/icons?d=gallery&m=free-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>-->
+    <!--https://github.com/js-cookie/js-cookie-->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script src="js/user.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/cookie.js"></script>
+    <script src="js/authAndRole.js"></script>
+
+
+
+
+
+    <script src="js/answerAdder.js"></script>
+    <script src="js/show.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.cookie.js"></script>-->
+
+
+
+    <!--<script src="js/hello.js"></script>-->
+    <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.14.0/cytoscape.min.js"></script>
+
+
+
+    <!--https://blog.js.cytoscape.org/2016/05/24/getting-started/-->
+
+    <style>
+        /*#cy {*/
+            /*width: 100%;*/
+            /*height: 100%;*/
+            /*position: absolute;*/
+            /*top: 0px;*/
+            /*left: 0px;*/
+        /*}*/
+        .them-col {
+            /*white-space: nowrap;*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            /*max-width: 100%;*/
+        }
+
+
+        /*.wrapper {*/
+            /*display: flex;*/
+            /*width: 100%;*/
+            /*align-items: stretch;*/
+        /*}*/
+
+        .wrapper {
+            /*display: flex;*/
+            width: 100%;
+        }
+
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 999;
+            background: #7386D5;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+
+        /*@media (max-width: 768px) {*/
+            #sidebar {
+                margin-left: -250px;
+            }
+            #sidebar.active {
+                margin-left: 0;
+            }
+        /*}*/
+
+        .scrowable {
+            height:550px;
+            overflow-y: scroll;
+        }
+
+        .scrowableX {
+            /*height:550px;*/
+            overflow-x: scroll;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!--<div class="container bg-light">-->
+
+    <div class="wrapper">
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="bg-primary pl-3">
+        <br />
+        <br />
+        <!--<div class="sidebar-header">-->
+            <!--<p>Темы</p>-->
+        <!--</div>-->
+        <!--<button type="button" class="sidebarCollapse btn btn-info">-->
+            <!--<i class="fas fa-align-left"></i>-->
+            <!--<span>Toggle Sidebar</span>-->
+        <!--</button>-->
+        <!--<ul class="list-unstyled components" >-->
+
+            <br />
+            <p>Темы</p>
+        <!--</ul>-->
+
+
+        <ul class="list-unstyled components scrowable" id="AllThemasUl" >
+
+
+            <!--<li class="active">-->
+                <!--<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>-->
+                <!--<ul class="collapse list-unstyled" id="homeSubmenu">-->
+                    <!--<li>-->
+                        <!--<a href="#">Home 1</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#">Home 2</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a href="#">Home 3</a>-->
+                    <!--</li>-->
+
+                <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="py-2">-->
+                <!--<a href="#" class="text-white"> ol1312312213123123 123123123123123123 123123123123123123 12312312312312312312312</a>-->
+            <!--</li >-->
+        </ul>
+
+    </nav>
+
+        <script>
+            $(document).ready(function () {
+
+                // $('#sidebarCollapse').on('click', function () {
+                //     // alert("dfdsfsdf")
+                //     $('#sidebar').toggleClass('active');
+                // });
+                $('.sidebarCollapse').on('click', function () {
+                    // alert("dfdsfsdf")
+                    $('#sidebar').toggleClass('active');
+
+                    $(this).find("i").toggleClass("fa-arrow-circle-right")
+                    $(this).find("i").toggleClass("fa-arrow-circle-left")
+                    // fa-arrow-circle-right
+                });
+
+            });
+
+        </script>
+
+    <!-- Page Content -->
+    <div id="content" >
+
+        <div class="container bg-light">
+
+    <nav class=" fixed-top navbar navbar-expand-lg navbar-dark bg-primary">
+
+    <!--<div class="rotate-sm-l-90 " >dfgdfgfdg-->
+    <!--</div>-->
+            <strong><a class="navbar-brand " href="#" style="transform:rotate(-10deg); transform: skewY(-10deg); rotate3d(x,y,z,angle)">Бузилище
+        </a></strong>
+        <!--<strong><a class="navbar-brand " href="#" style="transform: rotateY(70deg)">Бузилище-->
+        <!--</a></strong>-->
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <button type="button" class="sidebarCollapse btn btn-primary bg-primary" >
+            <!--<i class="fas fa-align-left"></i>-->
+            <!--<i class="fas fa-arrow-circle-left"></i>-->
+            <i class="fas fa-arrow-circle-right" style="font-size: 2rem;"  title="sidebar"></i>
+            <!--<span>Toggle Sidebar</span>-->
+        </button>
+
+        <!--<div id="userInfoDiv"><a href="/login">Login</a></div>-->
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+
+                <li id="userInfoDiv" class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+
+                <li class="active" id="rolesLi" style="display:none;">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link dropdown-toggle">Роли</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <!--<li>-->
+                            <!--<a href="#" class="nav-link">Home 1</a>-->
+                        <!--</li>-->
+                    </ul>
+                </li>
+                <li id="userLogoutLi" class="nav-item">
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+
+    <br />
+    <br />
+    <br />
+
+            <!--<div class="row"  ><h4 class="mx-4">Темы</h4></div>-->
+
+    <div class="row" id="AllThemasRow">
+        <!--<div class="them-col col-sm-4 col-md-2 m-2 p-2 border rounded bg-white" style="border-radius: 30px;">-->
+            <!--<a href="#" class="text-dark"> col1312312213123123 123123123123123123 123123123123123123 12312312312312312312312 </a>-->
+        <!--</div>-->
+
+    </div>
+
+    <div class="row">
+        <!-- Modal for Themes-->
+
+        <!-- Button trigger modal Themes-->
+        <button id="addThemaButton" type="button" class="btn btn-primary mx-4" onclick="showModalThema()"  style="display: none;" >
+            Добавить тему
+        </button>
+
+
+        <!-- Modal for Themes-->
+        <div class="modal fade" id="themaModal" tabindex="-1" role="dialog" aria-labelledby="themaModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="themaHeader" class="modal-title" id="themaModalLabel">Добавление темы</h5>
+                        <button type="button" class="closeThema close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Название темы</label>
+                        <br />
+                        <input id="themeName" type="text" style="display:table-cell; width:100%" />
+                        <br />
+                        <label>Начало диалога</label>
+                        <br />
+                        <textarea id="startQuestion" style="display:table-cell; width:100%"></textarea>
+
+                    </div>
+                    <div id="buttonAreaTh"  class="modal-footer">
+                        <button type="button" class="closeAnswer btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button id="sendThema" type="button" class="btn btn-primary" onclick="addTheme()" >Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="row">
+        <!-- Button trigger modal Answers-->
+        <!--<button type="button" class="btn btn-primary" data-target="#exampleModal" onclick="showModal()" >-->
+            <!--Launch demo modal-->
+        <!--</button>-->
+        <!-- Modal for answers-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="qwestion" class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="closeAnswer close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Ответ</label>
+                        <br />
+                        <textarea id="inputArea" class="w-100"></textarea>
+
+                        <br />
+                        <select id="selectBoxMemb" title="номер участника разговора (обычно меняется автоматически после 1 идет 2, затем 2->1->2.....">
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+                            <option value="5" >5</option>
+                        </select>
+                        <label title="не будет появляться как ответ на эту фразу в других темах"><input id="themeCheckBox" type="checkbox" checked="true"  name="usetheme"/>только к этой теме</label>
+                        <input title="id фразы из БД которая будет переиспользована как ответ" id="inputFoundId" type="text" disabled="true" readOnly="true" checked="true" size="2" />
+                        <div id="selectBoxDiv" style="position:relative;">
+                            <select id="selectBox" style="position:absolute; left: 550px; top: -50px;">
+                            </select>
+                        </div>
+                    </div>
+                    <div id="buttonArea"  class="modal-footer">
+                        <button type="button" class="closeAnswer btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <!--<button id="sendAnswer" type="button" class="btn btn-primary">Save changes</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal for edit-->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" >Редактировать</h5>
+                        <button type="button" class="closeEdit close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="qwestionArea" class="w-100"></textarea>
+                        <br />
+                        <input title="номер участника разговора (обычно меняется автоматически после 1 идет 2, затем 2->1->2....." id="inputMember" type="text" size="2" />
+                        <label title="не будет появляться как ответ на эту фразу в других темах"><input id="themeCheckBoxEd" type="checkbox" checked="true"  />только к этой теме</label>
+
+
+                        <label><input id="inputThemaEd" type="text"  size="5" />Тема</label> | Текущая тема - <span id="currentThemaId"></span>
+
+                    </div>
+                    <div id="buttonAreaEd"  class="modal-footer">
+                        <button type="button" class="closeEdit btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <!--<button id="sendEdit" type="button" class="btn btn-primary">Save changes</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <!--<div id="userInfoDiv"><a href="/login">Login</a></div>-->
+    <!--<h1>Show</h1>-->
+    <!--<div id="cy"></div>-->
+
+    <!--<div id="allThemes"></div>-->
+    <!--<div id="aadTheme" style="border:1px solid black;">-->
+        <!--<input id="themeName" type="text" /> Название темы <br />-->
+        <!--<input id="startQuestion" type="text" /> Начальная фраза <br />-->
+        <!--<button onclick="addTheme()">добавить</button>-->
+    <!--</div>-->
+
+    <br />
+
+     <div class="row"  >
+         <h4 class="mx-4 " id="theme"></h4>
+     </div>
+
+            <!--<i class="fas fa-search"></i>-->
+            <!--<span style="font-size: 1rem;">-->
+              <!--&lt;!&ndash;<span style="color: Mediumslateblue;">&ndash;&gt;-->
+              <!--&lt;!&ndash;<i class="fas fa-camera"></i>&ndash;&gt;-->
+                   <!--<i class="fas fa-search" style="color: Mediumslateblue; font-size: 1.5rem;" ></i>-->
+
+                  <!--<i class="fas fa-comment " ></i>-->
+                  <!--<i class="fas fa-comment-dots"></i>-->
+                  <!--&lt;!&ndash;<i class="fas fa-rocketchat"></i>&ndash;&gt;-->
+
+                  <!--<i class="fas fa-caret-square-down"></i>-->
+                     <!--<i class="fas fa-caret-square-up"></i>-->
+                         <!--<i class="fas fa-caret-square-left"></i>-->
+                     <!--<i class="fas fa-caret-square-right"></i>-->
+
+                  <!--<i class="fas fa-step-backward"></i>-->
+                     <!--<i class="fas fa-step-forward"></i>-->
+
+                  <!--<i class="fas fa-arrow-circle-left"></i>-->
+                     <!--<i class="fas fa-arrow-circle-right"></i>-->
+
+
+                  <!--<i class="fas fa-minus-square"></i>-->
+                  <!--<i class="fas fa-plus-square"></i>-->
+              <!--&lt;!&ndash;</span>&ndash;&gt;-->
+            <!--</span>-->
+
+    <!--<div id="theme"></div>-->
+    <!--<br />-->
+
+     <div class="row">
+         <div id="be" class="row mx-4 bg-white w-100 scrowableX">
+
+         </div>
+    </div>
+
+
+            <!--<div id="be" class="scrowableX"></div>-->
+    <!--<script src="js/show1t.js"></script>-->
+
+
+
+
+        <!--</main>-->
+
+
+
+    </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
