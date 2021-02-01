@@ -17,6 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <spring.securiry>5.2.0.RELEASE</spring.securiry>
+        <telegram.version>5.0.1</telegram.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>${telegram.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambotsextensions</artifactId>
+            <version>${telegram.version}</version>
         </dependency>
 
         <!--<dependency>-->
