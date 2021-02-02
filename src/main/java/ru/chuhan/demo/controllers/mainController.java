@@ -1,5 +1,10 @@
 package ru.chuhan.demo.controllers;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -15,6 +20,10 @@ import ru.chuhan.demo.service.AnswerService;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,6 +54,15 @@ public class mainController {
 //        treeItemDbManipulation();
 
         return new Content(content.customer_id, content.customer_content);
+    }
+
+    @RequestMapping(path="/parseb", method= RequestMethod.GET)
+    public void parse() throws IOException, OpenXML4JException, XmlException {
+        File file=new File("c:\\bo\\ff.docx");
+        FileInputStream fs = new FileInputStream(file);
+        OPCPackage d = OPCPackage.open(fs);
+        XWPFWordExtractor xw = new XWPFWordExtractor(d);
+        System.out.println(xw.getText());
     }
 
 
