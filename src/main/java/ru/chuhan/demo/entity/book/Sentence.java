@@ -5,7 +5,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
-@Table(name = "sentence1")
+@Table(name = "sentence")
 @Entity
 @Data
 @Accessors(chain = true)

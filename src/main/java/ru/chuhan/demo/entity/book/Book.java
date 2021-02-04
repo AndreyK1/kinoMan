@@ -8,11 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "books")
+@Table(name = "book")
 @Entity
 @Data
 @Accessors(chain = true)
-public class Books {
+public class Book {
     @Id
     @GeneratedValue
     private int id;

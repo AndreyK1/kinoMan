@@ -1,13 +1,5 @@
 package ru.chuhan.demo.controllers;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -15,11 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.chuhan.demo.db.ThemeRepository;
 import ru.chuhan.demo.db.TreeItemRepository;
 import ru.chuhan.demo.db.UserRepository2Old;
-import ru.chuhan.demo.db.books.BooksRepository;
-import ru.chuhan.demo.db.books.SentenceRepository;
 import ru.chuhan.demo.entity.*;
-import ru.chuhan.demo.entity.book.Books;
-import ru.chuhan.demo.entity.book.Sentence;
 import ru.chuhan.demo.entitysecur.Role;
 import ru.chuhan.demo.entitysecur.User;
 import ru.chuhan.demo.entitysecur.UserInfo;
@@ -27,10 +15,6 @@ import ru.chuhan.demo.service.AnswerService;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,90 +38,12 @@ public class mainController {
     @Autowired
     AnswerService answerService;
 
-    @Autowired
-    BooksRepository booksRepository;
-
-    @Autowired
-    SentenceRepository sentenceRepository;
-
-    //test
     @RequestMapping(path="/create", method= RequestMethod.POST)
     public Content index(@RequestBody Content content) {
 
 //        treeItemDbManipulation();
 
         return new Content(content.customer_id, content.customer_content);
-    }
-
-    @RequestMapping(path = "/parseb", method = RequestMethod.GET)
-    public void parse() throws IOException, OpenXML4JException, XmlException {
-        File file = new File("c:\\bo\\ff.docx");
-        try {
-            FileInputStream fs = new FileInputStream(file);
-//            OPCPackage d = OPCPackage.open(fs);
-//        XWPFWordExtractor xw = new XWPFWordExtractor(d);
-//        System.out.println(xw.getText());
-
-
-            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fs));
-
-            List<XWPFParagraph> paragraphList = xdoc.getParagraphs();
-
-            Books book = new Books().setAuthor("Антуан де Сент-Экзюпер").setName("Маленький принц");
-            Books save = booksRepository.save(book);
-
-
-            int par=0;
-            for (XWPFParagraph paragraph : paragraphList) {
-
-
-//                paragraph.getBody().getTables()
-//                        .getTable().getBody().getTableCell();
-
-//                oldParagraphHandler(paragraph);
-
-                List<XWPFTableRow> rows = paragraph.getBody().getTables().get(0).getRows();
-                for(int row=0; row < rows.size(); row++){
-                    String rus = rows.get(row).getCell(0).getText();
-                    String eng = rows.get(row).getCell(1).getText();
-                    Sentence sentence = new Sentence()
-                            .setBookId(book.getId())
-                            .setRowNum(row)
-                            .setParagraphNum(par)
-                            .setRus(rus)
-                            .setEng(eng);
-                    sentenceRepository.save(sentence);
-                }
-
-
-                par++;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        List<Sentence> all = sentenceRepository.findAll();
-        List<Books> all1 = booksRepository.findAll();
-        System.out.println("dfsdfsdf");
-
-
-    }
-
-    public void oldParagraphHandler(XWPFParagraph paragraph){
-        paragraph.getBody().getTables().get(0).getRows().get(10).getCell(0).getText();
-
-        System.out.println(paragraph.getText());
-        System.out.println(paragraph.getAlignment());
-        System.out.print(paragraph.getRuns().size());
-        System.out.println(paragraph.getStyle());
-
-        // Returns numbering format for this paragraph, eg bullet or lowerLetter.
-        System.out.println(paragraph.getNumFmt());
-        System.out.println(paragraph.getAlignment());
-
-        System.out.println(paragraph.isWordWrapped());
-
-        System.out.println("********************************************************************");
     }
 
 
