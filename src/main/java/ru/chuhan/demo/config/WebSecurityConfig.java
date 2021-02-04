@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf()
                 .disable()
+
+                .headers().disable()        //TODO delete this is for h2-console
                 .authorizeRequests()
 
 
