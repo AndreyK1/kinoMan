@@ -31,6 +31,14 @@
         <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+
+        <dependency>
+            <groupId>ru.voicerss</groupId>
+            <artifactId>voicerss</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/voicerss_tts.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
