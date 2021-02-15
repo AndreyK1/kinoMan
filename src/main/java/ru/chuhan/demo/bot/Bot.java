@@ -1,24 +1,18 @@
 package ru.chuhan.demo.bot;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 //Andrey
 //1
@@ -72,6 +66,9 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
 
+        //sendingAudio
+        sendAudio(update);
+
         if(update.getChannelPost() != null && update.getChannelPost().getText() != null ){
             try {
                 sendToTelegram(String.valueOf(update.getChannelPost().getSenderChat().getId()), update.getChannelPost().getText());
@@ -96,6 +93,38 @@ public class Bot extends TelegramLongPollingBot {
                 execute(outMessage);
             }
         } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendAudio(Update update){
+        try {
+            execute(SendVoice.builder()
+                    .chatId("-1001232767584")
+                    .voice(new InputFile().setMedia( new FileInputStream("voice.mp3"), "music"))
+
+                    .caption("caption1")
+//                    .captionEntity(MessageEntity.builder()
+//                            .type("text")
+//                    .text("text1")
+//                    .build())
+
+                    .build());
+
+            InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard();
+
+            execute(SendAudio.builder()
+                    .chatId("-1001232767584")
+                    .audio(new InputFile().setMedia( new FileInputStream("voice.mp3"), "music"))
+                    .caption("caption2")
+                    .replyMarkup(inlineKeyboardMarkup)
+                    .duration(1)
+//                    .captionEntity(MessageEntity.builder()
+//                            .type("text")
+//                            .text("text2")
+//                            .build())
+                    .build());
+        } catch (TelegramApiException | FileNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -131,6 +160,26 @@ public class Bot extends TelegramLongPollingBot {
 //        }
 
         //
+
+
+        //
+        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard();
+
+        SendMessage outMessage = new SendMessage();
+        //Указываем в какой чат будем отправлять сообщение
+        //(в тот же чат, откуда пришло входящее сообщение)
+        outMessage.setChatId(chatId);
+//        outMessage.setEntities(Collections.singletonList(MessageEntity.builder().));
+        //Указываем текст сообщения
+        outMessage.setText( text = "Hello world!    4 " + text.split("@EnglishPhraseBot")[0]);
+
+        outMessage.setReplyMarkup(inlineKeyboardMarkup);
+        //Отправляем сообщение
+        execute(outMessage);
+
+    }
+
+    public InlineKeyboardMarkup createKeyboard(){
         InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText("Тык");
@@ -148,19 +197,6 @@ public class Bot extends TelegramLongPollingBot {
         keyboardButtonsRow1.add(inlineKeyboardButton1);
 
         inlineKeyboardMarkup.setKeyboard(rowList);
-        //
-
-
-        SendMessage outMessage = new SendMessage();
-        //Указываем в какой чат будем отправлять сообщение
-        //(в тот же чат, откуда пришло входящее сообщение)
-        outMessage.setChatId(chatId);
-        //Указываем текст сообщения
-        outMessage.setText( text = "Hello world!    4 " + text.split("@EnglishPhraseBot")[0]);
-
-        outMessage.setReplyMarkup(inlineKeyboardMarkup);
-        //Отправляем сообщение
-        execute(outMessage);
-
+        return inlineKeyboardMarkup;
     }
 }

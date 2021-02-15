@@ -46,9 +46,11 @@ public class BooksController {
                 "I ask the indulgence of the children who may read this book for dedicating it to a grown-up. I have a serious reason: he is the best friend I have in the world."
                 , Languages.English_UnitedStates);
         params.setCodec(AudioCodec.WAV);
+        //8khz_8bit_mono.
         params.setFormat(AudioFormat.Format_44KHZ.AF_44khz_16bit_stereo);
         params.setBase64(false);
         params.setSSML(false);
+        //скорость
         params.setRate(0);
 
         byte[] voice = tts.speech(params);
