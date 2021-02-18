@@ -1,9 +1,13 @@
 package ru.chuhan.demo.bot;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -49,6 +53,9 @@ import java.util.List;
 
 
 public class Bot extends TelegramLongPollingBot {
+
+    public final String CHAT_ID = "-1001232767584";
+
     /**
      * Метод, который возвращает токен, выданный нам ботом @BotFather.
      * @return токен
@@ -66,17 +73,51 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
 
-        //sendingAudio
-        sendAudio(update);
+        if(update.getCallbackQuery() != null){
+            try {
+//                execute(EditMessageText
+//                        .builder()
+//                        .chatId(CHAT_ID)
+//                        .messageId(update.getCallbackQuery().getMessage().getMessageId())
+//                        .text("ffffffffffff")
+//                        .build());
+                //answerCallbackQuery
+                execute(AnswerCallbackQuery
+                        .builder()
+                        .text("asdasdasdsa")
+                        .callbackQueryId(update.getCallbackQuery().getId())
+//                        .chatId(CHAT_ID)
+//                        .inlineMessageId(update.getCallbackQuery().getId())
+//
+//                        .messageId(update.getCallbackQuery().getMessage().getMessageId())
 
+//                        .inlineMessageId()
+//                        .text("ffffffffffff")
+                        .build());
+
+
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+            update.getCallbackQuery().getMessage().getReplyMarkup().getKeyboard().get(0).get(0).setText("опана");
+        }
+
+
+        //сообщение в канале
         if(update.getChannelPost() != null && update.getChannelPost().getText() != null ){
             try {
+                if(update.getChannelPost().getText().equals("audio")){
+                    //sendingAudio
+                    sendAudio(update);
+                }
                 sendToTelegram(String.valueOf(update.getChannelPost().getSenderChat().getId()), update.getChannelPost().getText());
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
         }
 
+
+        //личное  сообщение боту
         try {
             //проверяем есть ли сообщение и текстовое ли оно
             if (update.hasMessage() && update.getMessage().hasText()) {
@@ -183,7 +224,9 @@ public class Bot extends TelegramLongPollingBot {
         InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText("Тык");
+
         inlineKeyboardButton.setCallbackData("Button \"Тык\" has been pressed");
+//        inlineKeyboardButton.
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
         keyboardButtonsRow1.add(inlineKeyboardButton);
