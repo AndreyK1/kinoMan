@@ -1,27 +1,15 @@
 package ru.chuhan.demo.controllers;
 
 import com.voicerss.tts.*;
-import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
-import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.chuhan.demo.entity.book.Book;
+import ru.chuhan.demo.entity.book.Sentence;
 import ru.chuhan.demo.service.BookService;
-
-//import java.io.FileOutputStream;
-//import com.voicerss.tts.AudioCodec;
-//import com.voicerss.tts.AudioFormat;
-//import com.voicerss.tts.Languages;
-//import com.voicerss.tts.SpeechDataEvent;
-//import com.voicerss.tts.SpeechDataEventListener;
-//import com.voicerss.tts.SpeechErrorEvent;
-//import com.voicerss.tts.SpeechErrorEventListener;
-//import com.voicerss.tts.VoiceParameters;
-//import com.voicerss.tts.VoiceProvider;
+import ru.chuhan.demo.service.SentenceService;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/book")
@@ -29,6 +17,9 @@ public class BooksController {
 
     @Autowired
     BookService bookService;
+
+    @Autowired
+    SentenceService sentenceService;
 
     @RequestMapping(path = "/parse", method = RequestMethod.GET)
     public void parse() {
@@ -59,10 +50,29 @@ public class BooksController {
         fos.write(voice, 0, voice.length);
         fos.flush();
         fos.close();
-
-
-
     }
+
+
+
+    @RequestMapping(path = "/all", method = RequestMethod.GET)
+    public List<Book> getAllBooks() {
+        return bookService.getAllBooks();
+    }
+
+    @RequestMapping(path = "/allSentences/{idBook}", method = RequestMethod.GET)
+    public List<Sentence> getAllSentences(@PathVariable(name = "idBook") int bookId) {
+        return sentenceService.getAllByBook(bookId);
+    }
+
+    @RequestMapping(path = "/deleteBook/{idBook}", method = RequestMethod.GET)
+    public void deleteBook(@PathVariable(name = "idBook") int bookId) {
+        bookService.deleteBook(bookId);
+//        sentenceService.deleteAllByBook(bookId);
+    }
+
+
+
+
 
 //    public static void main (String args[]) throws Exception {
 //        VoiceProvider tts = new VoiceProvider("<API key>");

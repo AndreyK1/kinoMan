@@ -25,6 +25,9 @@ public class BookService {
     @Autowired
     SentenceRepository sentenceRepository;
 
+    @Autowired
+    SentenceService sentenceService;
+
     @Transactional
     public void parseBook(String bookPath){
         File file = new File(bookPath);
@@ -64,10 +67,21 @@ public class BookService {
             ex.printStackTrace();
         }
 
-        List<Sentence> all = sentenceRepository.findAll();
+//        List<Sentence> all = sentenceRepository.findAll();
         List<Book> all1 = booksRepository.findAll();
         System.out.println("dfsdfsdf");
     }
+
+    public List<Book> getAllBooks(){
+        return booksRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteBook(int bookId) {
+        booksRepository.deleteById(bookId);
+        sentenceService.deleteAllByBook(bookId);
+    }
+
 
 //    public void oldParagraphHandler(XWPFParagraph paragraph){
 //        paragraph.getBody().getTables().get(0).getRows().get(10).getCell(0).getText();
