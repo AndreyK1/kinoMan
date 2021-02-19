@@ -166,7 +166,13 @@
 
             <!--<div class="row"  ><h4 class="mx-4">Темы</h4></div>-->
 
-
+    <div class="row">
+        <form enctype="multipart/form-data" method="post" action="/telbot/sendMessage">
+            <p>Послать сообщение в чат</p>
+            <p><input type="text" name="message" > message
+                <input type="submit" value="Отправить"></p>
+        </form>
+    </div>
     <div class="row">
         <form enctype="multipart/form-data" method="post" action="/book/parsebook">
             <p>Распарсить книгу</p>

@@ -54,7 +54,7 @@ import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
 
-    public final String CHAT_ID = "-1001232767584";
+    public static final String CHAT_ID = "-1001232767584";
 
     /**
      * Метод, который возвращает токен, выданный нам ботом @BotFather.
@@ -83,7 +83,7 @@ public class Bot extends TelegramLongPollingBot {
 //                        .build());
                 //answerCallbackQuery
                 execute(AnswerCallbackQuery
-                        .builder()
+                          .builder()
                         .text("asdasdasdsa")
                         .callbackQueryId(update.getCallbackQuery().getId())
 //                        .chatId(CHAT_ID)
