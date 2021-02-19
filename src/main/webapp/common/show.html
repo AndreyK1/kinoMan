@@ -167,7 +167,15 @@
             <!--<div class="row"  ><h4 class="mx-4">Темы</h4></div>-->
 
 
-
+    <div class="row">
+        <form enctype="multipart/form-data" method="post" action="/book/parsebook">
+            <p>Распарсить книгу</p>
+            <p><input type="file" name="file" > <!-- multiple accept="image/*,image/jpeg"-->
+                <input type="text" name="author" > author
+                <input type="text" name="bookName" > bookName
+                <input type="submit" value="Отправить"></p>
+        </form>
+    </div>
     <div class="row">
         <button onclick="showBooks()">showBooks</button>
 

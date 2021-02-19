@@ -7,6 +7,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.chuhan.demo.db.books.BooksRepository;
 import ru.chuhan.demo.db.books.SentenceRepository;
 import ru.chuhan.demo.entity.book.Book;
@@ -29,25 +30,29 @@ public class BookService {
     SentenceService sentenceService;
 
     @Transactional
-    public void parseBook(String bookPath){
-        File file = new File(bookPath);
+    public void parseBook(MultipartFile multipartFile, String author, String bookName){
+//        File file = new File(bookPath);
         try {
-            FileInputStream fs = new FileInputStream(file);
+//            FileInputStream fs = new FileInputStream(file);
 //            OPCPackage d = OPCPackage.open(fs);
 //        XWPFWordExtractor xw = new XWPFWordExtractor(d);
 //        System.out.println(xw.getText());
 
-            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fs));
+
+
+            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(multipartFile.getInputStream()));
             List<XWPFParagraph> paragraphList = xdoc.getParagraphs();
 
-            Book book = new Book().setAuthor("Антуан де Сент-Экзюпер").setName("Маленький принц");
+            Book book = new Book().setAuthor(author).setName(bookName);
             Book save = booksRepository.save(book);
 
             int par=0;
-            for (XWPFParagraph paragraph : paragraphList) {
-
+            XWPFParagraph paragraph = paragraphList.get(0);
+//            for (XWPFParagraph paragraph : paragraphList) {
+            for (var table : paragraph.getBody().getTables()) {
 //                oldParagraphHandler(paragraph);
-                List<XWPFTableRow> rows = paragraph.getBody().getTables().get(0).getRows();
+//                List<XWPFTableRow> rows = paragraph.getBody().getTables().get(0).getRows();
+                List<XWPFTableRow> rows = table.getRows();
                 for(int row=0; row < rows.size(); row++){
                     String rus = rows.get(row).getCell(0).getText();
                     String eng = rows.get(row).getCell(1).getText();

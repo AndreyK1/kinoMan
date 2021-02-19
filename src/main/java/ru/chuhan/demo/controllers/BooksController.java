@@ -3,6 +3,7 @@ package ru.chuhan.demo.controllers;
 import com.voicerss.tts.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.chuhan.demo.entity.book.Book;
 import ru.chuhan.demo.entity.book.Sentence;
 import ru.chuhan.demo.service.BookService;
@@ -23,7 +24,7 @@ public class BooksController {
 
     @RequestMapping(path = "/parse", method = RequestMethod.GET)
     public void parse() {
-        bookService.parseBook("c:\\bo\\ff.docx");
+//        bookService.parseBook("c:\\bo\\ff.docx", "sads", "sdfsdf");
     }
 
 
@@ -70,6 +71,19 @@ public class BooksController {
 //        sentenceService.deleteAllByBook(bookId);
     }
 
+    //pdf to word
+//https://www.pdf2go.com/ru/result#j=1ff8d1c8-c3f4-4a8e-a8e1-464b78e89890
+    //books from here
+    //https://fenglish.ru/the-oval-portrait-by-edgar-allan-poe-edgar-po-ovalnyj-portret/
+    @RequestMapping(path = "/parsebook", method = RequestMethod.POST)
+    public void parseBook(@RequestParam(name = "file") MultipartFile multipartFile,
+                          @RequestParam(name = "author") String author, @RequestParam(name = "bookName") String bookName) {
+//        bookService.deleteBook(bookId);
+//        sentenceService.deleteAllByBook(bookId);
+//            InputStream inputStream = multipartFile.getInputStream();
+            bookService.parseBook(multipartFile,  author, bookName);
+
+    }
 
 
 
