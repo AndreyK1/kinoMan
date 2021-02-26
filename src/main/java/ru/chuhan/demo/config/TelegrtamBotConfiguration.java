@@ -9,14 +9,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.chuhan.demo.bot.Bot;
 import ru.chuhan.demo.service.BotService;
+import ru.chuhan.demo.service.VoiceService;
 
 @Configuration
 @EnableScheduling
 public class TelegrtamBotConfiguration {
 
     @Bean
-    public Bot createBot(BotService botService) {
-       return new Bot(botService);
+    public Bot createBot(BotService botService, VoiceService voiceService) {
+       return new Bot(botService, voiceService);
     }
 
     @Bean
@@ -24,7 +25,7 @@ public class TelegrtamBotConfiguration {
         TelegramBotsApi telegramBotsApi;
         try {
             telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(createBot(null));
+            telegramBotsApi.registerBot(createBot(null, null));
             return telegramBotsApi;
         } catch (
                 TelegramApiRequestException e) {

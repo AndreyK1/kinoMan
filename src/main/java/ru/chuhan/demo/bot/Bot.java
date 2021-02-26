@@ -1,6 +1,7 @@
 package ru.chuhan.demo.bot;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
@@ -15,6 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.chuhan.demo.entity.book.Sentence;
 import ru.chuhan.demo.service.BotService;
+import ru.chuhan.demo.service.VoiceService;
 
 
 import java.io.*;
@@ -58,8 +60,11 @@ import java.util.List;
 public class Bot extends TelegramLongPollingBot {
 
     private final BotService botService;
+    private final VoiceService voiceService;
 
     public static final String CHAT_ID = "-1001232767584";
+    public static final String ADMIN_ID = "462180992";
+
 
     /**
      * Метод, который возвращает токен, выданный нам ботом @BotFather.
@@ -84,6 +89,7 @@ public class Bot extends TelegramLongPollingBot {
                 execute(botService.getAnswerCallbackQuery(update));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
+                sendMessageToAdmin("error - onUpdateReceived - клик по клавиатуре - update.getCallbackQuery().getId() - " + update.getCallbackQuery().getId() +" error " + e.getMessage());
             }
             update.getCallbackQuery().getMessage().getReplyMarkup().getKeyboard().get(0).get(0).setText("опана");
         }
@@ -99,6 +105,7 @@ public class Bot extends TelegramLongPollingBot {
                 sendToTelegram(String.valueOf(update.getChannelPost().getSenderChat().getId()), update.getChannelPost().getText());
             } catch (TelegramApiException e) {
                 e.printStackTrace();
+                sendMessageToAdmin("error - onUpdateReceived - сообщение в канале - update.getChannelPost().getSenderChat().getId() - " + update.getChannelPost().getSenderChat().getId() +" error " + e.getMessage());
             }
         }
 
@@ -121,6 +128,7 @@ public class Bot extends TelegramLongPollingBot {
             }
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            sendMessageToAdmin("error - onUpdateReceived - личное  сообщение боту - inMessage.getChatId() - " + update.getMessage().getChatId() +" " + e.getMessage());
         }
     }
 
@@ -139,7 +147,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     .build());
 
-            InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard("test");
+            InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard("test", Lang.EN);
 
             execute(SendAudio.builder()
                     .chatId("-1001232767584")
@@ -154,6 +162,7 @@ public class Bot extends TelegramLongPollingBot {
                     .build());
         } catch (TelegramApiException | FileNotFoundException e) {
             e.printStackTrace();
+            sendMessageToAdmin("error - sendAudio "+ e.getMessage());
         }
     }
 
@@ -166,31 +175,46 @@ public class Bot extends TelegramLongPollingBot {
         return "EnglishPhraseBot";
     }
 
-    public void sendToTelegramVithMedia(String chatId, Sentence sentence, byte[] voice) throws TelegramApiException {
-
+    public void sendToTelegramVithMedia(String chatId, Sentence sentence, Lang lang)  {
 
         String textRu = sentence.getRus().replaceAll("\"","");
         String textEn = sentence.getEng().replaceAll("\"","");
-        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard(String.valueOf(sentence.getId()));
-        System.out.println(sentence.getRus());
-        System.out.println(textRu);
-        System.out.println(textEn);
 
-        execute(SendAudio.builder()
-                .chatId(chatId)
-                .audio(new InputFile().setMedia(new ByteArrayInputStream(voice) , "voice"))
-                .caption(textRu)
-                .replyMarkup(inlineKeyboardMarkup)
-                .duration(1)
-//                    .captionEntity(MessageEntity.builder()
-//                            .type("text")
-//                            .text("text2")
-//                            .build())
-                .build());
+        String textShow = textRu;
+        String textTranslate = textEn;
+
+        if(lang.equals(Lang.EN)){
+            textShow = textEn;
+            textTranslate = textRu;
+        }
+
+        byte[] voice = voiceService.getVoice(textEn);
+
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard(String.valueOf(sentence.getId()), lang);
+//        System.out.println(sentence.getRus());
+//        System.out.println(textRu);
+//        System.out.println(textEn);
+
+        try {
+            execute(SendAudio.builder()
+                    .chatId(chatId)
+                    .audio(new InputFile().setMedia(new ByteArrayInputStream(voice) , "voice"))
+                    .caption(textShow)
+                    .replyMarkup(inlineKeyboardMarkup)
+                    .duration(1)
+    //                    .captionEntity(MessageEntity.builder()
+    //                            .type("text")
+    //                            .text("text2")
+    //                            .build())
+                    .build());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+            sendMessageToAdmin("error - sendToTelegramVithMedia "+ e.getMessage());
+        }
     }
 
 
-    //test
     public void sendToTelegram(String chatId, String text) throws TelegramApiException {
 //        String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
 //
@@ -215,7 +239,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
         //
-        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard("test2");
+        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard("test2", Lang.EN);
 
         SendMessage outMessage = new SendMessage();
         //Указываем в какой чат будем отправлять сообщение
@@ -231,18 +255,18 @@ public class Bot extends TelegramLongPollingBot {
 
     }
 
-    public InlineKeyboardMarkup createKeyboard(String text){
+    public InlineKeyboardMarkup createKeyboard(String sentenceId, Lang lang){
 
 
         InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
 
         InlineKeyboardButton inlineKeyboardButton0 = new InlineKeyboardButton();
         inlineKeyboardButton0.setText("33%");
-        inlineKeyboardButton0.setCallbackData("33-"+text);
+        inlineKeyboardButton0.setCallbackData("33-"+sentenceId+"-"+lang.name());
 
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText("50%");
-        inlineKeyboardButton.setCallbackData("50-"+text);
+        inlineKeyboardButton.setCallbackData("50-"+sentenceId+"-"+lang.name());
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
 
@@ -253,11 +277,11 @@ public class Bot extends TelegramLongPollingBot {
 
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("66%");
-        inlineKeyboardButton1.setCallbackData("66-"+text);
+        inlineKeyboardButton1.setCallbackData("66-"+sentenceId+"-"+lang.name());
 
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
         inlineKeyboardButton2.setText("100%");
-        inlineKeyboardButton2.setCallbackData("100-"+text);
+        inlineKeyboardButton2.setCallbackData("100-"+sentenceId+"-"+lang.name());
 
 
         keyboardButtonsRow1.add(inlineKeyboardButton1);
@@ -265,5 +289,20 @@ public class Bot extends TelegramLongPollingBot {
 
         inlineKeyboardMarkup.setKeyboard(rowList);
         return inlineKeyboardMarkup;
+    }
+
+    public void sendMessageToAdmin(String text) {
+        SendMessage outMessage = new SendMessage();
+        //Указываем в какой чат будем отправлять сообщение
+        outMessage.setChatId(ADMIN_ID);
+        //Указываем текст сообщения
+        outMessage.setText(text);
+        //Отправляем сообщение
+
+        try {
+            execute(outMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.chuhan.demo.bot.Lang;
 import ru.chuhan.demo.entity.book.Sentence;
 
 import java.util.Arrays;
@@ -15,8 +16,6 @@ public class BotService {
     @Autowired
     SentenceService sentenceService;
 
-
-
     public AnswerCallbackQuery getAnswerCallbackQuery(Update update){
 
         String[] split = update.getCallbackQuery().getData().split("-");
@@ -26,10 +25,17 @@ public class BotService {
         Optional<Sentence> sentenceOpt = sentenceService.getById(Integer.parseInt(split[1]));
         Sentence sentence = sentenceOpt.orElseThrow(() -> new RuntimeException("no such Sentence with id" + split[1]));
 
-        String text = sentence.getEng();
+        String text = sentence.getRus();
+        if(split[2].equals(Lang.RU.name())){
+            text = sentence.getEng(); //надо наоборот
+        }
 
         text = maskWords(text, split);
 
+        int end = 197;
+        if(text.length() > end){
+            text = text.substring(0,end) + "...";
+        }
 
         return AnswerCallbackQuery
                 .builder()
