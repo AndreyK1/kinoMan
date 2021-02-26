@@ -1,5 +1,6 @@
 package ru.chuhan.demo.bot;
 
+import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
@@ -12,6 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.chuhan.demo.entity.book.Sentence;
+import ru.chuhan.demo.service.BotService;
 
 
 import java.io.*;
@@ -51,8 +54,10 @@ import java.util.List;
 //channelPost
 //Chat(id=-1001232767584, type=channel, title=Alliexpress,
 
-
+@AllArgsConstructor
 public class Bot extends TelegramLongPollingBot {
+
+    private final BotService botService;
 
     public static final String CHAT_ID = "-1001232767584";
 
@@ -73,29 +78,10 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
 
+        //клик по клавиатуре
         if(update.getCallbackQuery() != null){
             try {
-//                execute(EditMessageText
-//                        .builder()
-//                        .chatId(CHAT_ID)
-//                        .messageId(update.getCallbackQuery().getMessage().getMessageId())
-//                        .text("ffffffffffff")
-//                        .build());
-                //answerCallbackQuery
-                execute(AnswerCallbackQuery
-                          .builder()
-                        .text("asdasdasdsa")
-                        .callbackQueryId(update.getCallbackQuery().getId())
-//                        .chatId(CHAT_ID)
-//                        .inlineMessageId(update.getCallbackQuery().getId())
-//
-//                        .messageId(update.getCallbackQuery().getMessage().getMessageId())
-
-//                        .inlineMessageId()
-//                        .text("ffffffffffff")
-                        .build());
-
-
+                execute(botService.getAnswerCallbackQuery(update));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -138,6 +124,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    //test
     public void sendAudio(Update update){
         try {
             execute(SendVoice.builder()
@@ -152,7 +139,7 @@ public class Bot extends TelegramLongPollingBot {
 
                     .build());
 
-            InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard();
+            InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard("test");
 
             execute(SendAudio.builder()
                     .chatId("-1001232767584")
@@ -179,7 +166,31 @@ public class Bot extends TelegramLongPollingBot {
         return "EnglishPhraseBot";
     }
 
+    public void sendToTelegramVithMedia(String chatId, Sentence sentence, byte[] voice) throws TelegramApiException {
 
+
+        String textRu = sentence.getRus().replaceAll("\"","");
+        String textEn = sentence.getEng().replaceAll("\"","");
+        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard(String.valueOf(sentence.getId()));
+        System.out.println(sentence.getRus());
+        System.out.println(textRu);
+        System.out.println(textEn);
+
+        execute(SendAudio.builder()
+                .chatId(chatId)
+                .audio(new InputFile().setMedia(new ByteArrayInputStream(voice) , "voice"))
+                .caption(textRu)
+                .replyMarkup(inlineKeyboardMarkup)
+                .duration(1)
+//                    .captionEntity(MessageEntity.builder()
+//                            .type("text")
+//                            .text("text2")
+//                            .build())
+                .build());
+    }
+
+
+    //test
     public void sendToTelegram(String chatId, String text) throws TelegramApiException {
 //        String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
 //
@@ -204,7 +215,7 @@ public class Bot extends TelegramLongPollingBot {
 
 
         //
-        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard();
+        InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboard("test2");
 
         SendMessage outMessage = new SendMessage();
         //Указываем в какой чат будем отправлять сообщение
@@ -220,24 +231,37 @@ public class Bot extends TelegramLongPollingBot {
 
     }
 
-    public InlineKeyboardMarkup createKeyboard(){
-        InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
-        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-        inlineKeyboardButton.setText("Тык");
+    public InlineKeyboardMarkup createKeyboard(String text){
 
-        inlineKeyboardButton.setCallbackData("Button \"Тык\" has been pressed");
-//        inlineKeyboardButton.
+
+        InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
+
+        InlineKeyboardButton inlineKeyboardButton0 = new InlineKeyboardButton();
+        inlineKeyboardButton0.setText("33%");
+        inlineKeyboardButton0.setCallbackData("33-"+text);
+
+        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+        inlineKeyboardButton.setText("50%");
+        inlineKeyboardButton.setCallbackData("50-"+text);
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
-        keyboardButtonsRow1.add(inlineKeyboardButton);
 
+        keyboardButtonsRow1.add(inlineKeyboardButton0);
+        keyboardButtonsRow1.add(inlineKeyboardButton);
         List<List<InlineKeyboardButton>> rowList= new ArrayList<>();
         rowList.add(keyboardButtonsRow1);
 
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
-        inlineKeyboardButton1.setText("Fi4a");
-        inlineKeyboardButton1.setCallbackData("CallFi4a");
+        inlineKeyboardButton1.setText("66%");
+        inlineKeyboardButton1.setCallbackData("66-"+text);
+
+        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+        inlineKeyboardButton2.setText("100%");
+        inlineKeyboardButton2.setCallbackData("100-"+text);
+
+
         keyboardButtonsRow1.add(inlineKeyboardButton1);
+        keyboardButtonsRow1.add(inlineKeyboardButton2);
 
         inlineKeyboardMarkup.setKeyboard(rowList);
         return inlineKeyboardMarkup;

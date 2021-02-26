@@ -30,12 +30,13 @@ public class BooksController {
 
     //http://www.voicerss.org/personel/
     //http://www.voicerss.org/sdk/java.aspx
+    //test
     @RequestMapping(path = "/voice", method = RequestMethod.GET)
     public void voice() throws Exception {
         VoiceProvider tts = new VoiceProvider("b6c7619ce9a942f7a639a74c882553c9");
 
         VoiceParameters params = new VoiceParameters(
-                "I ask the indulgence of the children who may read this book for dedicating it to a grown-up. I have a serious reason: he is the best friend I have in the world."
+                "I may ask the indulgence of the children who may read this book for dedicating it to a grown-up. I have a serious reason: he is the best friend I have in the world."
                 , Languages.English_UnitedStates);
         params.setCodec(AudioCodec.WAV);
         //8khz_8bit_mono.
