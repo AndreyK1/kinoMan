@@ -65,6 +65,10 @@ public class Bot extends TelegramLongPollingBot {
     public static final String CHAT_ID = "-1001232767584";
     public static final String ADMIN_ID = "462180992";
 
+    public final String POLLING_BOT_ID = "1689312176:AAG6Gg7NhwA0k455g5ycPlmCBkzoju3A_PE";
+
+    public final String WHOOK_BOT_ID = "1637222107:AAHQY8VohOQVoQ9mM73psnVxCdtRfnQnA8o";
+
 
     /**
      * Метод, который возвращает токен, выданный нам ботом @BotFather.
@@ -72,7 +76,7 @@ public class Bot extends TelegramLongPollingBot {
      */
     @Override
     public String getBotToken() {
-        return "1689312176:AAG6Gg7NhwA0k455g5ycPlmCBkzoju3A_PE";
+        return WHOOK_BOT_ID;
     }
 
     /**
@@ -82,6 +86,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
+        System.out.println("1+");
 
         //клик по клавиатуре
         if(update.getCallbackQuery() != null){
@@ -96,18 +101,19 @@ public class Bot extends TelegramLongPollingBot {
 
 
         //сообщение в канале
-        if(update.getChannelPost() != null && update.getChannelPost().getText() != null ){
-            try {
-                if(update.getChannelPost().getText().equals("audio")){
-                    //sendingAudio
-                    sendAudio(update);
-                }
-                sendToTelegram(String.valueOf(update.getChannelPost().getSenderChat().getId()), update.getChannelPost().getText());
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-                sendMessageToAdmin("error - onUpdateReceived - сообщение в канале - update.getChannelPost().getSenderChat().getId() - " + update.getChannelPost().getSenderChat().getId() +" error " + e.getMessage());
-            }
-        }
+        //TODO use когда надо будет обрабатывать любые сообщения в канале
+//        if(update.getChannelPost() != null && update.getChannelPost().getText() != null ){
+//            try {
+//                if(update.getChannelPost().getText().equals("audio")){
+//                    //sendingAudio
+//                    sendAudio(update);
+//                }
+//                sendToTelegram(String.valueOf(update.getChannelPost().getSenderChat().getId()), update.getChannelPost().getText());
+//            } catch (TelegramApiException e) {
+//                e.printStackTrace();
+//                sendMessageToAdmin("error - onUpdateReceived - сообщение в канале - update.getChannelPost().getSenderChat().getId() - " + update.getChannelPost().getSenderChat().getId() +" error " + e.getMessage());
+//            }
+//        }
 
 
         //личное  сообщение боту

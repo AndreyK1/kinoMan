@@ -25,6 +25,7 @@
 <!--    <script src="js/cookie.js"></script>-->
 <!--    <script src="js/authAndRole.js"></script>-->
         <script src="js/books.js"></script>
+        <script src="js/telbot.js"></script>
 
 
 
@@ -165,11 +166,16 @@
     <br />
 
             <!--<div class="row"  ><h4 class="mx-4">Темы</h4></div>-->
-
     <div class="row">
-        <form enctype="multipart/form-data" method="post" action="/telbot/sendMessage">
+        <form id="sentenceToGroup"  enctype="multipart/form-data" method="get" action="/message/sendToGroup">
+            Послать абзац из книги в группу
+                <input type="submit" value="Отправить"></p>
+        </form>
+    </div>
+    <div class="row">
+        <form id="msgToChat"  enctype="multipart/form-data" method="post" action="/telbot/sendMessage">
             <p>Послать сообщение в чат</p>
-            <p><input type="text" name="message" > message
+            <p><input type="text" id="messageTC" > message
                 <input type="submit" value="Отправить"></p>
         </form>
     </div>

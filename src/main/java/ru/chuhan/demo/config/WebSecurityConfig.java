@@ -31,12 +31,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        //РАСКОМЕНТИТЬ ДЛЯ ОТКЛЮЧЕНИЯ ВСЕЙ ЗАЩИТЫ
+//        httpSecurity
+//                .csrf()
+//                .disable()
+//
+//                .headers().disable()
+//                .authorizeRequests()
+//                .antMatchers("/**").permitAll();
+
+
         httpSecurity
                 .csrf()
                 .disable()
 
                 .headers().disable()        //TODO delete this is for h2-console
                 .authorizeRequests()
+
+                .antMatchers("/message/sendToGroup").permitAll()
+                .antMatchers("/telbot/sendMessage").permitAll()
+                .antMatchers("/telbot/whook").permitAll()
 
 
 //                .antMatchers("/show").permitAll()

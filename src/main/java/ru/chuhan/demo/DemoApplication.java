@@ -14,6 +14,8 @@ import ru.chuhan.demo.bot.Bot;
 
 import java.util.Arrays;
 
+//export spring_profiles_active=dep
+//java -cp "demo.jar;voicerss_tts.jar" --spring.profiles.active=dep org.springframework.boot.loader.JarLauncher
 @SpringBootApplication
 public class DemoApplication {
 
