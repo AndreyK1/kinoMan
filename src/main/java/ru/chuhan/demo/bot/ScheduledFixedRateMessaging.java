@@ -9,6 +9,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.chuhan.demo.entity.book.Sentence;
 import ru.chuhan.demo.service.SentenceService;
 
+import java.util.Date;
+
 @EnableAsync
 @Component
 public class ScheduledFixedRateMessaging {
@@ -23,7 +25,9 @@ public class ScheduledFixedRateMessaging {
 
     @Async
     //TODO uncomment
-    @Scheduled(fixedRate = 40000)
+//    @Scheduled(fixedRate = 40000)
+    @Scheduled(cron = "1 1 10,12,14,16,18,20 * * ?") //через каждые два часа с 10 до 20
+
     public void scheduleFixedRateTaskAsync() throws InterruptedException {
 
         try {
@@ -36,6 +40,8 @@ public class ScheduledFixedRateMessaging {
                 last = Lang.EN;
             }
 
+            //TODO
+//            System.out.println(new Date());
             bot.sendToTelegramVithMedia(Bot.CHAT_ID, sentence, last);
 
         } catch (Exception e) {

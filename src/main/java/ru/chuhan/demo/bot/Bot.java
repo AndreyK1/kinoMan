@@ -62,12 +62,16 @@ public class Bot extends TelegramLongPollingBot {
     private final BotService botService;
     private final VoiceService voiceService;
 
-    public static final String CHAT_ID = "-1001232767584";
+//    public static final String CHAT_ID = "-1001232767584";
+
+    public static final String CHAT_ID = "-1001339562665";
+
     public static final String ADMIN_ID = "462180992";
 
     public final String POLLING_BOT_ID = "1689312176:AAG6Gg7NhwA0k455g5ycPlmCBkzoju3A_PE";
 
-    public final String WHOOK_BOT_ID = "1637222107:AAHQY8VohOQVoQ9mM73psnVxCdtRfnQnA8o";
+//    public final String WHOOK_BOT_ID = "1637222107:AAHQY8VohOQVoQ9mM73psnVxCdtRfnQnA8o";
+public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2TSc";
 
 
     /**
