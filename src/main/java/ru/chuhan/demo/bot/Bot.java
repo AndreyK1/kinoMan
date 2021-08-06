@@ -23,6 +23,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.chuhan.demo.controllers.TelegramBotController.TEST_MESSAGE;
+
 //Andrey
 //1
 
@@ -95,7 +97,13 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
         //клик по клавиатуре
         if(update.getCallbackQuery() != null){
             try {
-                execute(botService.getAnswerCallbackQuery(update));
+                AnswerCallbackQuery answerCallbackQuery = botService.getAnswerCallbackQuery(update);
+                //проверяем что сообщение не тестоовое (посланое с контролера telbot/whookTest)
+                //
+                if(update.getMessage() != null && update.getMessage().getText() == TEST_MESSAGE){
+                    return;
+                }
+                execute(answerCallbackQuery);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
                 sendMessageToAdmin("error - onUpdateReceived - клик по клавиатуре - update.getCallbackQuery().getId() - " + update.getCallbackQuery().getId() +" error " + e.getMessage());
@@ -133,6 +141,10 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
                 outMessage.setChatId(String.valueOf(inMessage.getChatId()));
                 //Указываем текст сообщения
                 outMessage.setText(inMessage.getText());
+                //проверяем что сообщение не тестоовое (посланое с контролера telbot/whookTest)
+                if(update.getMessage() != null && update.getMessage().getText() == TEST_MESSAGE){
+                    return;
+                }
                 //Отправляем сообщение
                 execute(outMessage);
             }
@@ -141,6 +153,15 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
             sendMessageToAdmin("error - onUpdateReceived - личное  сообщение боту - inMessage.getChatId() - " + update.getMessage().getChatId() +" " + e.getMessage());
         }
     }
+
+
+//    //проверяем что сообщение не тестоовое (посланое с контролера telbot/whookTest)
+//    public <T extends Serializable, Method extends BotApiMethod<T>> T executeIfNoTest(Method method) throws TelegramApiException {
+//        if(method.getMessage() != null && update.getMessage().getText() == TEST_MESSAGE){
+//            return null;
+//        }
+//        return execute(method);
+//    }
 
     //test
     public void sendAudio(Update update){

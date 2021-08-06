@@ -2,6 +2,8 @@ package ru.chuhan.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.chuhan.demo.bot.Bot;
@@ -12,6 +14,8 @@ import javax.ws.rs.core.Response;
 @RestController
 @RequestMapping("/telbot")
 public class TelegramBotController {
+
+    public final static String TEST_MESSAGE = "This is test ghjpRtterterysbdgv";
 
     @Autowired
     Bot bot;
@@ -30,6 +34,31 @@ public class TelegramBotController {
         System.out.println(update.getMessage());
 
         //!!!!!TODO
+        bot.onUpdateReceived(update);
+
+//    public Response updateReceived(@PathParam("botPath") String botPath, Update update) {
+        return Response.ok(null).build();
+    }
+
+
+        @RequestMapping(path = "/whookTest", method = RequestMethod.GET)
+    public Response updateReceivedTest() {
+
+
+        Update update = new Update();
+        Message message = new Message();
+        message.setText(TEST_MESSAGE);//it means test!!!!!
+
+        CallbackQuery callbackQuery = new CallbackQuery();
+            callbackQuery.setData("50-12268-RU"); // 50 - процент аскировки слов, 12268 - sentence id
+
+            callbackQuery.setId("111212131");
+
+        update.setCallbackQuery(callbackQuery);
+
+
+        update.setMessage(message);
+
         bot.onUpdateReceived(update);
 
 //    public Response updateReceived(@PathParam("botPath") String botPath, Update update) {
