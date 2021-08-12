@@ -58,7 +58,7 @@ public class QuestionService {
           question.setRus(strings[0]);
           question.setAnswer(strings[1]);
         }else{
-          question = questionRepository.findByQuizNumAndPartNumAndRowNum(Integer.parseInt(partNum), Integer.parseInt(quizNum), row);
+          question = questionRepository.findByQuizNumAndPartNumAndRowNum(Integer.parseInt(quizNum), Integer.parseInt(partNum), row);
           question.setEng(strings[0]);
         }
 
