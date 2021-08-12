@@ -50,7 +50,7 @@ public class TelegramBotController {
         message.setText(TEST_MESSAGE);//it means test!!!!!
 
         CallbackQuery callbackQuery = new CallbackQuery();
-            callbackQuery.setData("50-12268-RU"); // 50 - процент аскировки слов, 12268 - sentence id
+            callbackQuery.setData("Q-50-14440-RU"); // 50 - процент аскировки слов, 12268 - sentence id
 
             callbackQuery.setId("111212131");
 

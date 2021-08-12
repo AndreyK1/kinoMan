@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.chuhan.demo.entity.book.Book;
 import ru.chuhan.demo.entity.book.Sentence;
+import ru.chuhan.demo.entity.quiz.Question;
 import ru.chuhan.demo.service.BookService;
+import ru.chuhan.demo.service.QuestionService;
 import ru.chuhan.demo.service.SentenceService;
 
 import java.io.FileOutputStream;
@@ -21,6 +23,9 @@ public class BooksController {
 
     @Autowired
     SentenceService sentenceService;
+
+    @Autowired
+    QuestionService questionService;
 
     @RequestMapping(path = "/parse", method = RequestMethod.GET)
     public void parse() {
@@ -61,6 +66,13 @@ public class BooksController {
         return bookService.getAllBooks();
     }
 
+    @RequestMapping(path = "/allQuizes/{quizNum}/{partNum}", method = RequestMethod.GET)
+    public List<Question> getAllQuizes(@PathVariable(name = "quizNum") int quizNum,
+                                       @PathVariable(name = "partNum") int partNum) {
+        return questionService.getAllByQuiz( quizNum,  partNum);
+    }
+
+
     @RequestMapping(path = "/allSentences/{idBook}", method = RequestMethod.GET)
     public List<Sentence> getAllSentences(@PathVariable(name = "idBook") int bookId) {
         return sentenceService.getAllByBook(bookId);
@@ -85,7 +97,17 @@ public class BooksController {
             bookService.parseBook(multipartFile,  author, bookName);
     }
 
-
+    @RequestMapping(path = "/parseQuiz", method = RequestMethod.POST)
+    public void parseQuiz(@RequestParam(name = "file") MultipartFile multipartFile,
+                          @RequestParam(name = "quizNum") String quizNum,
+                          @RequestParam(name = "partNum") String partNum,
+                          @RequestParam(name = "lang") String lang,
+                          @RequestParam(name = "delimeter") String delimeter) {
+//        bookService.deleteBook(bookId);
+//        sentenceService.deleteAllByBook(bookId);
+//            InputStream inputStream = multipartFile.getInputStream();
+        questionService.parseQuiz(multipartFile, quizNum, partNum, lang, delimeter);
+    }
 
 
 //    public static void main (String args[]) throws Exception {

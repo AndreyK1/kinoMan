@@ -1,0 +1,13 @@
+-- auto-generated definition
+create table QUESTION
+(
+    ID            INTEGER not null
+        primary key,
+    quiz_num       INTEGER not null,
+    ENG           VARCHAR(1000),
+    PART_NUM INTEGER not null,
+    ROW_NUM       INTEGER not null,
+    RUS           VARCHAR(1000),
+    ANSWER           VARCHAR(255)
+);
+

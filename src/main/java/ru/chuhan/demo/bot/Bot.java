@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.chuhan.demo.entity.book.Sentence;
+import ru.chuhan.demo.entity.quiz.Question;
 import ru.chuhan.demo.service.BotService;
 import ru.chuhan.demo.service.VoiceService;
 
@@ -206,7 +207,7 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
         return "EnglishPhraseBot";
     }
 
-    public void sendToTelegramVithMedia(String chatId, Sentence sentence, Lang lang)  {
+    public void sendSentenceToTelegramVithMedia(String chatId, Sentence sentence, Lang lang)  {
 
         String textRu = sentence.getRus().replaceAll("\"","");
         String textEn = sentence.getEng().replaceAll("\"","");
@@ -241,10 +242,31 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
                     .build());
         } catch (TelegramApiException e) {
             e.printStackTrace();
-            sendMessageToAdmin("error - sendToTelegramVithMedia "+ e.getMessage());
+            sendMessageToAdmin("error - sendToTelegramVithMedia sentence"+ e.getMessage());
         }
     }
 
+
+   public void sendQuestionToTelegramVithMedia(String chatId, Question question)  {
+
+        String textRu = question.getRus().replaceAll("\"","");
+        String textEn = question.getEng().replaceAll("\"","");
+
+       byte[] voice = voiceService.getVoice(textEn);
+       InlineKeyboardMarkup inlineKeyboardMarkup = createKeyboardQuestion(String.valueOf(question.getId()));
+       try {
+           execute(SendAudio.builder()
+                       .chatId(chatId)
+                       .audio(new InputFile().setMedia(new ByteArrayInputStream(voice) , "voice"))
+                       .caption(textRu)
+                       .replyMarkup(inlineKeyboardMarkup)
+                       .duration(1)
+                       .build());
+       } catch (TelegramApiException e) {
+           e.printStackTrace();
+           sendMessageToAdmin("error - sendToTelegramVithMedia question"+ e.getMessage());
+       }
+    }
 
     public void sendToTelegram(String chatId, String text) throws TelegramApiException {
 //        String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
@@ -293,11 +315,11 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
 
         InlineKeyboardButton inlineKeyboardButton0 = new InlineKeyboardButton();
         inlineKeyboardButton0.setText("33%");
-        inlineKeyboardButton0.setCallbackData("33-"+sentenceId+"-"+lang.name());
+        inlineKeyboardButton0.setCallbackData("S-"+"33-"+sentenceId+"-"+lang.name());
 
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText("50%");
-        inlineKeyboardButton.setCallbackData("50-"+sentenceId+"-"+lang.name());
+        inlineKeyboardButton.setCallbackData("S-"+"50-"+sentenceId+"-"+lang.name());
 
         List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
 
@@ -308,11 +330,48 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
 
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
         inlineKeyboardButton1.setText("66%");
-        inlineKeyboardButton1.setCallbackData("66-"+sentenceId+"-"+lang.name());
+        inlineKeyboardButton1.setCallbackData("S-"+"66-"+sentenceId+"-"+lang.name());
 
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
         inlineKeyboardButton2.setText("100%");
-        inlineKeyboardButton2.setCallbackData("100-"+sentenceId+"-"+lang.name());
+        inlineKeyboardButton2.setCallbackData("S-"+"100-"+sentenceId+"-"+lang.name());
+
+
+        keyboardButtonsRow1.add(inlineKeyboardButton1);
+        keyboardButtonsRow1.add(inlineKeyboardButton2);
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+
+    public InlineKeyboardMarkup createKeyboardQuestion(String questionId){
+
+
+        InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
+
+        InlineKeyboardButton inlineKeyboardButton0 = new InlineKeyboardButton();
+        inlineKeyboardButton0.setText("33%");
+        inlineKeyboardButton0.setCallbackData("Q-"+"33-"+questionId);
+
+        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+        inlineKeyboardButton.setText("50%");
+        inlineKeyboardButton.setCallbackData("Q-"+"50-"+questionId);
+
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+
+        keyboardButtonsRow1.add(inlineKeyboardButton0);
+        keyboardButtonsRow1.add(inlineKeyboardButton);
+        List<List<InlineKeyboardButton>> rowList= new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+
+        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+        inlineKeyboardButton1.setText("66%");
+        inlineKeyboardButton1.setCallbackData("Q-"+"66-"+questionId);
+
+        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+        inlineKeyboardButton2.setText("100%");
+        inlineKeyboardButton2.setCallbackData("Q-"+"100-"+questionId);
 
 
         keyboardButtonsRow1.add(inlineKeyboardButton1);

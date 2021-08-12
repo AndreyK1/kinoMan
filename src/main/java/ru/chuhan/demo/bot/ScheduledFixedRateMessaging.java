@@ -7,6 +7,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.chuhan.demo.entity.book.Sentence;
+import ru.chuhan.demo.entity.quiz.Question;
+import ru.chuhan.demo.service.QuestionService;
 import ru.chuhan.demo.service.SentenceService;
 
 import java.util.Date;
@@ -17,6 +19,9 @@ public class ScheduledFixedRateMessaging {
 
     @Autowired
     SentenceService sentenceService;
+    @Autowired
+    QuestionService questionService;
+
 
     @Autowired
     Bot bot;
@@ -42,7 +47,7 @@ public class ScheduledFixedRateMessaging {
 
             //TODO
 //            System.out.println(new Date());
-            bot.sendToTelegramVithMedia(Bot.CHAT_ID, sentence, last);
+            bot.sendSentenceToTelegramVithMedia(Bot.CHAT_ID, sentence, last);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,5 +56,23 @@ public class ScheduledFixedRateMessaging {
 //        System.out.println(
 //                "Fixed rate task async - " + System.currentTimeMillis() / 1000);
 //        Thread.sleep(2000);
+    }
+
+    @Async
+    //TODO uncomment
+//    @Scheduled(fixedRate = 140000)
+    @Scheduled(cron = "1 3 10,11,12,13,14,15,16,17,18,19,20 * * ?") //через каждый час с 10 до 20
+    public void scheduleTaskAsyncQustion() throws InterruptedException {
+
+        try {
+            Question question = questionService.getRandom();
+
+            //TODO
+            bot.sendQuestionToTelegramVithMedia(Bot.CHAT_ID, question);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            bot.sendMessageToAdmin("error - scheduleFixedRateTaskAsync "+ e.getMessage());
+        }
     }
 }

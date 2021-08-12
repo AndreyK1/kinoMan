@@ -32,8 +32,8 @@ public class MessageController {
 
 //        byte[] voice = voiceService.getVoice(sentence.getEng());
 
-        bot.sendToTelegramVithMedia(Bot.CHAT_ID, sentence, Lang.EN);
-        bot.sendToTelegramVithMedia(Bot.CHAT_ID, sentence, Lang.RU);
+        bot.sendSentenceToTelegramVithMedia(Bot.CHAT_ID, sentence, Lang.EN);
+        bot.sendSentenceToTelegramVithMedia(Bot.CHAT_ID, sentence, Lang.RU);
     }
 
     //test

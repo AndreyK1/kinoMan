@@ -1,0 +1,12 @@
+-- auto-generated definition
+create table SENTENCE
+(
+    ID            INTEGER not null
+        primary key,
+    BOOK_ID       INTEGER not null,
+    ENG           VARCHAR(1000),
+    PARAGRAPH_NUM INTEGER not null,
+    ROW_NUM       INTEGER not null,
+    RUS           VARCHAR(1000)
+);
+

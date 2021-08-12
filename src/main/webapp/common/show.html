@@ -25,6 +25,7 @@
 <!--    <script src="js/cookie.js"></script>-->
 <!--    <script src="js/authAndRole.js"></script>-->
         <script src="js/books.js"></script>
+        <script src="js/quiz.js"></script>
         <script src="js/telbot.js"></script>
 
 
@@ -197,6 +198,26 @@
     <div class="row" id="AllSentencesRow">
     </div>
 
+    <div class="row">--------------------------------------------------------</div>
+    <div class="row">
+        <form enctype="multipart/form-data" method="post" action="/book/parseQuiz">
+            <p>Распарсить файл с вопросами</p>
+            <p><input type="file" name="file" > <!-- multiple accept="image/*,image/jpeg"-->
+                <input type="text" name="quizNum" > quizNum
+                <input type="text" name="partNum" > partNum
+                <input type="text" name="lang" > lang : ru/en
+                <input type="text" name="delimeter" > delimeter : */|
+                <input type="submit" value="Отправить"></p>
+        </form>
+    </div>
+    <div class="row">--------------------------------------------------------</div>
+            <input type="text" id="quizNum" > quizNum
+            <input type="text" id="partNum" > partNum
+            <div class="row">
+                <button onclick="showQuizes()">showQuizes</button></div>
+
+            <div class="row" id="AllQuizesRow">
+            </div>
 
     <br />
 
