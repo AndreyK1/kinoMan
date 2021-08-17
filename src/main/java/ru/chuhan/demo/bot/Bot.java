@@ -74,7 +74,7 @@ public class Bot extends TelegramLongPollingBot {
     public final String POLLING_BOT_ID = "1689312176:AAG6Gg7NhwA0k455g5ycPlmCBkzoju3A_PE";
 
 //    public final String WHOOK_BOT_ID = "1637222107:AAHQY8VohOQVoQ9mM73psnVxCdtRfnQnA8o";
-public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2TSc";
+public final String WHOOK_BOT_ID = "1606769980:AAEu9Tp7tfnjj2jrh0MEtW9aRzWH9uHup4w";
 
 
     /**
@@ -351,8 +351,8 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
         InlineKeyboardMarkup inlineKeyboardMarkup =new InlineKeyboardMarkup();
 
         InlineKeyboardButton inlineKeyboardButton0 = new InlineKeyboardButton();
-        inlineKeyboardButton0.setText("33%");
-        inlineKeyboardButton0.setCallbackData("Q-"+"33-"+questionId);
+        inlineKeyboardButton0.setText("???");
+        inlineKeyboardButton0.setCallbackData("Q-"+"??-"+questionId);
 
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
         inlineKeyboardButton.setText("50%");
@@ -372,6 +372,7 @@ public final String WHOOK_BOT_ID = "1606769980:AAEGnUdy82fMJ0TsFB9XPG__baEJO2G2T
         InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
         inlineKeyboardButton2.setText("100%");
         inlineKeyboardButton2.setCallbackData("Q-"+"100-"+questionId);
+
 
 
         keyboardButtonsRow1.add(inlineKeyboardButton1);

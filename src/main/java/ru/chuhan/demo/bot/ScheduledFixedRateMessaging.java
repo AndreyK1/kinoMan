@@ -62,7 +62,7 @@ public class ScheduledFixedRateMessaging {
     //TODO uncomment
 //    @Scheduled(fixedRate = 140000)
     @Scheduled(cron = "1 3 10,11,12,13,14,15,16,17,18,19,20 * * ?") //через каждый час с 10 до 20
-    public void scheduleTaskAsyncQustion() throws InterruptedException {
+    public void scheduleTaskAsyncQuestion() throws InterruptedException {
 
         try {
             Question question = questionService.getRandom();

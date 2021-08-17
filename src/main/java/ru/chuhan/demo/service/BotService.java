@@ -38,7 +38,7 @@ public class BotService {
         Optional<Question> questionOpt = questionService.getById(Integer.parseInt(split[2]));
         Question question = questionOpt.orElseThrow(() -> new RuntimeException("no such Question with id" + split[2]));
         String text = question.getEng();
-        text = maskWords(text, split);
+        text = maskWords(text, split, question.getAnswer());
         int end = 197;
         if(text.length() > end){
             text = text.substring(0,end) + "...";
@@ -63,7 +63,7 @@ public class BotService {
             text = sentence.getEng(); //надо наоборот
         }
 
-        text = maskWords(text, split);
+        text = maskWords(text, split, "");
 
         int end = 197;
         if(text.length() > end){
@@ -94,7 +94,7 @@ public class BotService {
 
     }
 
-    public String maskWords(String text, String[] split){
+    public String maskWords(String text, String[] split, String answer){
 
         if("100".equals(split[1]))
             return text;
@@ -130,6 +130,10 @@ public class BotService {
                 }
             }
             return String.join(" " ,Arrays.asList(s));
+        }
+
+        if("??".equals(split[1])) {
+            return answer;
         }
         return "Что-то пошло не так!!!";
 
