@@ -67,7 +67,13 @@ public class Bot extends TelegramLongPollingBot {
 
 //    public static final String CHAT_ID = "-1001232767584";
 
-    public static final String CHAT_ID = "-1001339562665";
+//    public static final String CHAT_ID = "-1001339562665";
+    public static final List<String> CHAT_IDS = List.of("-1001339562665", "-563182323"); ;
+
+    //t1
+    //-523158696
+    //t2
+    //-563182323
 
     public static final String ADMIN_ID = "462180992";
 

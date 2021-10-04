@@ -22,7 +22,7 @@ public class TelegramBotController {
 
     @RequestMapping(path = "/sendMessage", method = RequestMethod.POST)
     public void sendMessage(@RequestBody CommonMsgDto commonMsgDto) throws TelegramApiException {
-        bot.sendToTelegram(Bot.CHAT_ID, commonMsgDto.getMessage());
+        bot.sendToTelegram(Bot.CHAT_IDS.get(0), commonMsgDto.getMessage());
     }
 
 

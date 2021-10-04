@@ -13,6 +13,8 @@ import ru.chuhan.demo.service.SentenceService;
 
 import java.util.Date;
 
+import static ru.chuhan.demo.bot.Bot.CHAT_IDS;
+
 @EnableAsync
 @Component
 public class ScheduledFixedRateMessaging {
@@ -47,7 +49,8 @@ public class ScheduledFixedRateMessaging {
 
             //TODO
 //            System.out.println(new Date());
-            bot.sendSentenceToTelegramVithMedia(Bot.CHAT_ID, sentence, last);
+            CHAT_IDS.forEach(id -> bot.sendSentenceToTelegramVithMedia(id, sentence, last));
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +71,8 @@ public class ScheduledFixedRateMessaging {
             Question question = questionService.getRandom();
 
             //TODO
-            bot.sendQuestionToTelegramVithMedia(Bot.CHAT_ID, question);
+//            bot.sendQuestionToTelegramVithMedia(Bot.CHAT_ID, question);
+            CHAT_IDS.forEach(id -> bot.sendQuestionToTelegramVithMedia(id, question));
 
         } catch (Exception e) {
             e.printStackTrace();
