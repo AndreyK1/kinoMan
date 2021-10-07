@@ -68,7 +68,15 @@ public class Bot extends TelegramLongPollingBot {
 //    public static final String CHAT_ID = "-1001232767584";
 
 //    public static final String CHAT_ID = "-1001339562665";
-    public static final List<String> CHAT_IDS = List.of("-1001339562665", "-563182323"); ;
+
+    //real channels
+    public static final List<String> CHAT_IDS = List.of("-1001339562665", "-1001231567151");
+    //test channels
+//    public static final List<String> CHAT_IDS = List.of("-523158696", "-1001231567151");
+    //must fly
+    //-1001339562665
+    //English self teacher
+    //-1001231567151
 
     //t1
     //-523158696
@@ -77,11 +85,16 @@ public class Bot extends TelegramLongPollingBot {
 
     public static final String ADMIN_ID = "462180992";
 
-    public final String POLLING_BOT_ID = "1689312176:AAG6Gg7NhwA0k455g5ycPlmCBkzoju3A_PE";
+//    public final String POLLING_BOT_ID = "1689312176:AAG6Gg7NhwA0k455g5ycPlmCBkzoju3A_PE";
 
 //    public final String WHOOK_BOT_ID = "1637222107:AAHQY8VohOQVoQ9mM73psnVxCdtRfnQnA8o";
-public final String WHOOK_BOT_ID = "1606769980:AAEu9Tp7tfnjj2jrh0MEtW9aRzWH9uHup4w";
-
+    ///real english
+public final String WHOOK_BOT_ID = "1606769980:AAGdirImLssijutaaqtNyvaRwQDSfkjHewM";
+    //test mafia
+//public final String WHOOK_BOT_ID = "1960213902:AAFC4gtyastVkt9o9RCu6SdS0CpnYcaDnAo";
+    //testEnglish
+    //http://t.me/TestEnglishMazaBot
+//public final String WHOOK_BOT_ID = "2035109148:AAEM1MUa3eLpKWsEb_GL5h156pWaTxfNFSk";
 
     /**
      * Метод, который возвращает токен, выданный нам ботом @BotFather.
